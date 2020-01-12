@@ -72,6 +72,10 @@ class Game {
   getCurrentStat() {
     return { snake: this.snake, ghostSnake: this.ghostSnake, food: this.food };
   }
+  update() {
+    this.snake.move();
+    this.ghostSnake.move();
+  }
 }
 
 const NUM_OF_COLS = 100;
@@ -124,12 +128,6 @@ const handleKeyPress = snake => {
   snake.turnLeft();
 };
 
-const moveAndDrawSnake = function(snake) {
-  snake.move();
-  eraseTail(snake);
-  drawSnake(snake);
-};
-
 const attachEventListeners = snake => {
   document.body.onkeydown = handleKeyPress.bind(null, snake);
 };
@@ -162,10 +160,17 @@ const setup = game => {
   drawFood(food);
 };
 
-const animateSnakes = game => {
+const draw = function(game) {
   const { snake, ghostSnake } = game.getCurrentStat();
-  moveAndDrawSnake(snake);
-  moveAndDrawSnake(ghostSnake);
+  drawSnake(snake);
+  eraseTail(snake);
+  drawSnake(ghostSnake);
+  eraseTail(ghostSnake);
+};
+
+const animateGridItems = game => {
+  game.update();
+  draw(game);
 };
 
 const randomlyTurnSnake = game => {
@@ -184,6 +189,6 @@ const main = function() {
   const game = new Game(snake, ghostSnake, food);
   setup(game);
 
-  setInterval(animateSnakes, 200, game);
+  setInterval(animateGridItems, 200, game);
   setInterval(randomlyTurnSnake, 500, game);
 };
