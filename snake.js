@@ -20,6 +20,9 @@ class Direction {
   turnLeft() {
     this.heading = (this.heading + 1) % 4;
   }
+  turnRight() {
+    this.heading = (this.heading + 3) % 4;
+  }
 }
 
 class Snake {
@@ -40,6 +43,10 @@ class Snake {
 
   turnLeft() {
     this.direction.turnLeft();
+  }
+
+  turnRight() {
+    this.direction.turnRight();
   }
 
   move() {
@@ -82,8 +89,8 @@ class Game {
       this.ghostSnake.turnLeft();
     }
   }
-  turnLeft() {
-    this.snake.turnLeft();
+  turnSnake(direction) {
+    this.snake['turn' + direction]();
   }
 }
 
@@ -133,12 +140,14 @@ const drawFood = function(food) {
   cell.classList.add('food');
 };
 
-const handleKeyPress = game => {
-  game.turnLeft();
+const handleKeyPress = (game, event) => {
+  const directions = { ArrowLeft: 'Left', ArrowRight: 'Right' };
+  const direction = directions[event.key];
+  direction && game.turnSnake(direction);
 };
 
 const attachEventListeners = game => {
-  document.body.onkeydown = handleKeyPress.bind(null, game);
+  document.body.onkeydown = () => handleKeyPress(game, event);
 };
 
 const initSnake = () => {
