@@ -82,6 +82,9 @@ class Game {
       this.ghostSnake.turnLeft();
     }
   }
+  turnLeft() {
+    this.snake.turnLeft();
+  }
 }
 
 const NUM_OF_COLS = 100;
@@ -130,12 +133,12 @@ const drawFood = function(food) {
   cell.classList.add('food');
 };
 
-const handleKeyPress = snake => {
-  snake.turnLeft();
+const handleKeyPress = game => {
+  game.turnLeft();
 };
 
-const attachEventListeners = snake => {
-  document.body.onkeydown = handleKeyPress.bind(null, snake);
+const attachEventListeners = game => {
+  document.body.onkeydown = handleKeyPress.bind(null, game);
 };
 
 const initSnake = () => {
@@ -158,7 +161,7 @@ const initGhostSnake = () => {
 
 const setup = game => {
   const { snake, ghostSnake, food } = game.getCurrentStat();
-  attachEventListeners(snake);
+  attachEventListeners(game);
   createGrids();
 
   drawSnake(snake);
