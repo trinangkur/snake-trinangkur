@@ -76,6 +76,12 @@ class Game {
     this.snake.move();
     this.ghostSnake.move();
   }
+  turnGhostSnake() {
+    let x = Math.random() * 100;
+    if (x > 50) {
+      this.ghostSnake.turnLeft();
+    }
+  }
 }
 
 const NUM_OF_COLS = 100;
@@ -173,14 +179,6 @@ const animateGridItems = game => {
   draw(game);
 };
 
-const randomlyTurnSnake = game => {
-  const { ghostSnake } = game.getCurrentStat();
-  let x = Math.random() * 100;
-  if (x > 50) {
-    ghostSnake.turnLeft();
-  }
-};
-
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
@@ -190,5 +188,7 @@ const main = function() {
   setup(game);
 
   setInterval(animateGridItems, 200, game);
-  setInterval(randomlyTurnSnake, 500, game);
+  setInterval(() => {
+    game.turnGhostSnake();
+  }, 500);
 };
