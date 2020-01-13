@@ -70,6 +70,10 @@ class Snake {
     this.positions.unshift(this.previousTail);
   }
 
+  hasReached(position) {
+    return areCellsEqual(this.head, position);
+  }
+
   hasEatenItself() {
     const restBody = this.positions.slice(0, this.positions.length - 1);
     return restBody.some(part => areCellsEqual(part, this.head));
@@ -94,6 +98,7 @@ class Game {
     this.food = food;
     this.previousFood = [0, 0];
   }
+
   getCurrentStat() {
     return {
       snake: this.snake,
@@ -103,14 +108,10 @@ class Game {
     };
   }
 
-  hasEatenFood() {
-    return areCellsEqual(this.snake.head, this.food.position);
-  }
-
   update() {
     this.snake.move();
     this.ghostSnake.move();
-    if (this.hasEatenFood()) {
+    if (this.snake.hasReached(this.food.position)) {
       this.previousFood = this.food.position;
       const newFoodCol = Math.floor(Math.random() * 100);
       const newFoodRow = Math.floor(Math.random() * 60);
