@@ -33,6 +33,11 @@ class Snake {
     this.previousTail = [0, 0];
   }
 
+  get head() {
+    const head = this.positions[this.positions.length - 1];
+    return head.slice();
+  }
+
   get location() {
     return this.positions.slice();
   }
@@ -70,18 +75,38 @@ class Food {
   }
 }
 
+const areCellsEqual = (cellOne, cellTwo) =>
+  cellOne.every((ordinate, index) => ordinate === cellTwo[index]);
+
 class Game {
   constructor(snake, ghostSnake, food) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
+    this.previousFood = [0, 0];
   }
   getCurrentStat() {
-    return { snake: this.snake, ghostSnake: this.ghostSnake, food: this.food };
+    return {
+      snake: this.snake,
+      ghostSnake: this.ghostSnake,
+      food: this.food,
+      previousFood: this.previousFood
+    };
   }
+
+  hasEatenFood() {
+    return areCellsEqual(this.snake.head, this.food.position);
+  }
+
   update() {
     this.snake.move();
     this.ghostSnake.move();
+    if (this.hasEatenFood()) {
+      this.previousFood = this.food.position;
+      const newFoodCol = Math.floor(Math.random() * 100);
+      const newFoodRow = Math.floor(Math.random() * 60);
+      this.food = new Food(newFoodCol, newFoodRow);
+    }
   }
   turnGhostSnake() {
     let x = Math.random() * 100;
@@ -125,6 +150,12 @@ const eraseTail = function(snake) {
   let [colId, rowId] = snake.previousTail;
   const cell = getCell(colId, rowId);
   cell.classList.remove(snake.species);
+};
+
+const eraseFood = function(food) {
+  let [colId, rowId] = food;
+  const cell = getCell(colId, rowId);
+  cell.classList.remove('food');
 };
 
 const drawSnake = function(snake) {
@@ -179,11 +210,13 @@ const setup = game => {
 };
 
 const draw = function(game) {
-  const { snake, ghostSnake } = game.getCurrentStat();
+  const { snake, ghostSnake, food, previousFood } = game.getCurrentStat();
   drawSnake(snake);
   eraseTail(snake);
   drawSnake(ghostSnake);
   eraseTail(ghostSnake);
+  eraseFood(previousFood);
+  drawFood(food);
 };
 
 const animateGridItems = game => {
@@ -199,7 +232,7 @@ const main = function() {
   const game = new Game(snake, ghostSnake, food);
   setup(game);
 
-  setInterval(animateGridItems, 200, game);
+  setInterval(animateGridItems, 300, game);
   setInterval(() => {
     game.turnGhostSnake();
   }, 500);
