@@ -78,6 +78,14 @@ class Snake {
     const restBody = this.positions.slice(0, this.positions.length - 1);
     return restBody.some(part => areCellsEqual(part, this.head));
   }
+
+  hasTouched(boundary) {
+    const touchedVertically =
+      this.head[0] < 0 || this.head[0] > boundary.colNum;
+    const touchedHorizontally =
+      this.head[1] < 0 || this.head[1] > boundary.rowNum;
+    return touchedHorizontally || touchedVertically;
+  }
 }
 
 class Food {
@@ -92,11 +100,12 @@ class Food {
 }
 
 class Game {
-  constructor(snake, ghostSnake, food) {
+  constructor(snake, ghostSnake, food, boundary) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
     this.previousFood = [0, 0];
+    this.boundary = boundary;
   }
 
   getCurrentStat() {
@@ -110,8 +119,8 @@ class Game {
 
   generateFood() {
     this.previousFood = this.food.position;
-    const newFoodCol = Math.floor(Math.random() * 100);
-    const newFoodRow = Math.floor(Math.random() * 60);
+    const newFoodCol = Math.floor(Math.random() * this.boundary.colNum);
+    const newFoodRow = Math.floor(Math.random() * this.boundary.rowNum);
     this.food = new Food(newFoodCol, newFoodRow);
   }
 
@@ -136,7 +145,7 @@ class Game {
   }
 
   isOver() {
-    return this.snake.hasEatenItself();
+    return this.snake.hasEatenItself() || this.snake.hasTouched(this.boundary);
   }
 }
 
@@ -250,17 +259,20 @@ const main = function() {
   const ghostSnake = initGhostSnake();
   const food = new Food(5, 5);
 
-  const game = new Game(snake, ghostSnake, food);
+  const game = new Game(snake, ghostSnake, food, {
+    colNum: NUM_OF_COLS,
+    rowNum: NUM_OF_ROWS
+  });
   setup(game);
 
   const mainGame = setInterval(() => {
-    animateGridItems(game);
     if (game.isOver()) {
       clearInterval(mainGame);
       clearInterval(ghostSnakeTurner);
       alert('game over');
     }
-  }, 300);
+    animateGridItems(game);
+  }, 50);
   const ghostSnakeTurner = setInterval(() => {
     game.turnGhostSnake();
   }, 500);
