@@ -267,6 +267,16 @@ const setup = game => {
   drawFood(food);
 };
 
+const renderSnake = function(snake) {
+  drawSnake(snake);
+  eraseTail(snake);
+};
+
+const renderFood = function(previousFood, food) {
+  eraseFood(previousFood);
+  drawFood(food);
+};
+
 const draw = function(game) {
   const {
     snake,
@@ -275,12 +285,9 @@ const draw = function(game) {
     previousFood,
     score
   } = game.getCurrentStat();
-  drawSnake(snake);
-  eraseTail(snake);
-  drawSnake(ghostSnake);
-  eraseTail(ghostSnake);
-  eraseFood(previousFood);
-  drawFood(food);
+  renderSnake(snake);
+  renderSnake(ghostSnake);
+  renderFood(previousFood, food);
   viewScore(score);
 };
 
