@@ -3,6 +3,9 @@ const NORTH = 1;
 const WEST = 2;
 const SOUTH = 3;
 
+const areCellsEqual = (cellOne, cellTwo) =>
+  cellOne.every((ordinate, index) => ordinate === cellTwo[index]);
+
 class Direction {
   constructor(initialHeading) {
     this.heading = initialHeading;
@@ -62,8 +65,14 @@ class Snake {
 
     this.positions.push([headX + deltaX, headY + deltaY]);
   }
+
   eatFood() {
     this.positions.unshift(this.previousTail);
+  }
+
+  hasEatenItself() {
+    const restBody = this.positions.slice(0, this.positions.length - 1);
+    return restBody.some(part => areCellsEqual(part, this.head));
   }
 }
 
@@ -77,9 +86,6 @@ class Food {
     return [this.colId, this.rowId];
   }
 }
-
-const areCellsEqual = (cellOne, cellTwo) =>
-  cellOne.every((ordinate, index) => ordinate === cellTwo[index]);
 
 class Game {
   constructor(snake, ghostSnake, food) {
@@ -112,14 +118,20 @@ class Game {
       this.snake.eatFood();
     }
   }
+
   turnGhostSnake() {
     let x = Math.random() * 100;
     if (x > 50) {
       this.ghostSnake.turnLeft();
     }
   }
+
   turnSnake(direction) {
     this.snake['turn' + direction]();
+  }
+
+  isOver() {
+    return this.snake.hasEatenItself();
   }
 }
 
@@ -236,8 +248,15 @@ const main = function() {
   const game = new Game(snake, ghostSnake, food);
   setup(game);
 
-  setInterval(animateGridItems, 300, game);
-  setInterval(() => {
+  const mainGame = setInterval(() => {
+    animateGridItems(game);
+    if (game.isOver()) {
+      clearInterval(mainGame);
+      clearInterval(ghostSnakeTurner);
+      alert('game over');
+    }
+  }, 300);
+  const ghostSnakeTurner = setInterval(() => {
     game.turnGhostSnake();
   }, 500);
 };
