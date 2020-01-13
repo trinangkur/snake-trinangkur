@@ -41,12 +41,12 @@ class Snake {
     return head.slice();
   }
 
-  get location() {
-    return this.positions.slice();
-  }
-
-  get species() {
-    return this.type;
+  getStat() {
+    return {
+      location: this.positions,
+      species: this.type,
+      previousTail: this.previousTail
+    };
   }
 
   turnLeft() {
@@ -97,6 +97,10 @@ class Food {
   get position() {
     return [this.colId, this.rowId];
   }
+
+  getStat() {
+    return { position: this.position };
+  }
 }
 
 class Scorer {
@@ -125,9 +129,9 @@ class Game {
 
   getCurrentStat() {
     return {
-      snake: this.snake,
-      ghostSnake: this.ghostSnake,
-      food: this.food,
+      snake: this.snake.getStat(),
+      ghostSnake: this.ghostSnake.getStat(),
+      food: this.food.getStat(),
       previousFood: this.previousFood,
       score: this.scorer.score
     };
@@ -300,8 +304,8 @@ const main = function() {
       return;
     }
     draw(game);
-  }, 200);
+  }, 90);
   const ghostSnakeTurner = setInterval(() => {
     game.guideGhostSnake();
-  }, 500);
+  }, 50);
 };
