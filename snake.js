@@ -62,6 +62,9 @@ class Snake {
 
     this.positions.push([headX + deltaX, headY + deltaY]);
   }
+  eatFood() {
+    this.positions.unshift(this.previousTail);
+  }
 }
 
 class Food {
@@ -106,6 +109,7 @@ class Game {
       const newFoodCol = Math.floor(Math.random() * 100);
       const newFoodRow = Math.floor(Math.random() * 60);
       this.food = new Food(newFoodCol, newFoodRow);
+      this.snake.eatFood();
     }
   }
   turnGhostSnake() {
