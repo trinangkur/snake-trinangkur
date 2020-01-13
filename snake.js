@@ -70,7 +70,7 @@ class Snake {
     this.positions.unshift(this.previousTail);
   }
 
-  hasReached(position) {
+  hasReachedFood(position) {
     return areCellsEqual(this.head, position);
   }
 
@@ -108,15 +108,19 @@ class Game {
     };
   }
 
+  generateFood() {
+    this.previousFood = this.food.position;
+    const newFoodCol = Math.floor(Math.random() * 100);
+    const newFoodRow = Math.floor(Math.random() * 60);
+    this.food = new Food(newFoodCol, newFoodRow);
+  }
+
   update() {
     this.snake.move();
     this.ghostSnake.move();
-    if (this.snake.hasReached(this.food.position)) {
-      this.previousFood = this.food.position;
-      const newFoodCol = Math.floor(Math.random() * 100);
-      const newFoodRow = Math.floor(Math.random() * 60);
-      this.food = new Food(newFoodCol, newFoodRow);
+    if (this.snake.hasReachedFood(this.food.position)) {
       this.snake.eatFood();
+      this.generateFood();
     }
   }
 
