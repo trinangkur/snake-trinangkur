@@ -34,9 +34,9 @@ const eraseTail = function(snake) {
 };
 
 const eraseFood = function(food) {
-  let [colId, rowId] = food;
+  let [colId, rowId] = food.position;
   const cell = getCell(colId, rowId);
-  cell.classList.remove('food');
+  cell.classList.remove(food.type);
 };
 
 const drawSnake = function(snake) {
@@ -49,7 +49,7 @@ const drawSnake = function(snake) {
 const drawFood = function(food) {
   let [colId, rowId] = food.position;
   const cell = getCell(colId, rowId);
-  cell.classList.add('food');
+  cell.classList.add(food.type);
 };
 
 const viewScore = function(score) {
@@ -122,7 +122,7 @@ const draw = function(game) {
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(5, 5);
+  const food = new Food(5, 5, 'normalFood');
 
   const game = new Game(snake, ghostSnake, food, {
     colNum: NUM_OF_COLS - 1,
@@ -139,8 +139,8 @@ const main = function() {
       return;
     }
     draw(game);
-  }, 90);
+  }, 100);
   const ghostSnakeTurner = setInterval(() => {
     game.guideGhostSnake();
-  }, 50);
+  }, 100);
 };

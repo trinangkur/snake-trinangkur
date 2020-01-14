@@ -3,7 +3,7 @@ class Game {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
-    this.previousFood = [0, 0];
+    this.previousFood = new Food(0, 0, 'normalFood');
     this.boundary = boundary;
     this.scorer = new Scorer();
   }
@@ -19,10 +19,11 @@ class Game {
   }
 
   generateFood() {
-    this.previousFood = this.food.position;
+    this.previousFood = this.food.getStat();
     const newFoodCol = Math.floor(Math.random() * this.boundary.colNum);
     const newFoodRow = Math.floor(Math.random() * this.boundary.rowNum);
-    this.food = new Food(newFoodCol, newFoodRow);
+    const foodType = this.scorer.score % 4 ? 'normalFood' : 'specialFood';
+    this.food = new Food(newFoodCol, newFoodRow, foodType);
   }
 
   update() {
@@ -30,8 +31,8 @@ class Game {
     this.ghostSnake.move();
     if (this.snake.hasReachedFood(this.food.position)) {
       this.snake.eatFood();
+      this.scorer.increaseBy(this.food.point);
       this.generateFood();
-      this.scorer.increase();
     }
   }
 

@@ -3,8 +3,8 @@ class Scorer {
     this.currentScore = 0;
   }
 
-  increase() {
-    this.currentScore++;
+  increaseBy(point) {
+    this.currentScore += point;
   }
 
   get score() {

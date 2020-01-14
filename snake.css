@@ -24,8 +24,29 @@ h1 {
   background-color: gray;
 }
 
-.food {
+.normalFood {
   background-color: red;
+  border-radius: 50%;
+}
+
+.specialFood {
+  background-color: #888888;
+  /* border-radius: 50%; */
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-name: blink;
+}
+
+@keyframes blink {
+  from {
+    border-radius: 20%;
+    box-shadow: 0 0 0 0 #888888;
+  }
+  to {
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #888888;
+  }
 }
 
 #scoreBoard {
