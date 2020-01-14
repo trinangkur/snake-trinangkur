@@ -1,3 +1,7 @@
+body {
+  font-family: sans-serif;
+}
+
 h1 {
   text-align: center;
 }
@@ -7,7 +11,8 @@ h1 {
   display: flex;
   margin: 0 auto;
   flex-wrap: wrap;
-  border: 1px solid black;
+  border: 1px solid gray;
+  box-shadow: 0 0 2px 1px gray;
 }
 
 .cell {
@@ -31,7 +36,6 @@ h1 {
 
 .specialFood {
   background-color: #888888;
-  /* border-radius: 50%; */
   animation-duration: 0.5s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
