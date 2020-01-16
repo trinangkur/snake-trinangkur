@@ -41,14 +41,12 @@ class Snake {
 
   wrap(boundary) {
     this.move();
-    this.positions.forEach((part, index) => {
-      let [partX, partY] = part;
-      if (partX < 0) partX = 99;
-      partX = partX % (boundary.colNum + 1);
-      if (partY < 0) partY = 59;
-      partY = partY % (boundary.rowNum + 1);
-      this.positions[index] = [partX, partY];
-    });
+    let [headX, headY] = this.head;
+    if (headX < 0) headX = 99;
+    headX = headX % (boundary.colNum + 1);
+    if (headY < 0) headY = 59;
+    headY = headY % (boundary.rowNum + 1);
+    this.positions[this.positions.length - 1] = [headX, headY];
   }
 
   eatFood() {
