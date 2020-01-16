@@ -139,7 +139,7 @@ const main = function() {
       return;
     }
     draw(game);
-  }, 100);
+  }, 80);
   const ghostSnakeTurner = setInterval(() => {
     game.guideGhostSnake();
   }, 500);

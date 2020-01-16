@@ -29,7 +29,7 @@ class Game {
   update() {
     this.snake.move();
     this.ghostSnake.wrap(this.boundary);
-    if (this.snake.hasReachedFood(this.food.position)) {
+    if (this.snake.hasReached(this.food.position)) {
       this.snake.eatFood();
       this.scorer.increaseBy(this.food.point);
       this.generateFood();
@@ -48,6 +48,10 @@ class Game {
   }
 
   isOver() {
-    return this.snake.hasEatenItself() || this.snake.hasTouched(this.boundary);
+    return (
+      this.snake.hasEatenItself() ||
+      this.snake.hasTouched(this.boundary) ||
+      this.snake.hasTouchedSnake(this.ghostSnake.positions)
+    );
   }
 }

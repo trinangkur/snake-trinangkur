@@ -53,7 +53,7 @@ class Snake {
     this.positions.unshift(this.previousTail);
   }
 
-  hasReachedFood(position) {
+  hasReached(position) {
     return areCellsEqual(this.head, position);
   }
 
@@ -68,5 +68,8 @@ class Snake {
     const touchedHorizontally =
       this.head[1] < 0 || this.head[1] > boundary.rowNum;
     return touchedHorizontally || touchedVertically;
+  }
+  hasTouchedSnake(positions) {
+    return positions.some(part => this.hasReached(part));
   }
 }
