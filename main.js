@@ -140,7 +140,8 @@ const main = function() {
     }
     draw(game);
   }, 100);
+  game.ghostSnake.turnLeft();
   const ghostSnakeTurner = setInterval(() => {
     game.guideGhostSnake();
-  }, 100);
+  }, 500);
 };

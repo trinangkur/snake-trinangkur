@@ -22,3 +22,4 @@
 --DONE-- * If snake touches itself or the walls, the game should be over
 --DONE-- * Add a scoring mechanism
 --DONE__ * Add special food.
+--DONE__ * Added wrap in ghost snake.

@@ -28,7 +28,7 @@ class Game {
 
   update() {
     this.snake.move();
-    this.ghostSnake.move();
+    this.ghostSnake.wrap(this.boundary);
     if (this.snake.hasReachedFood(this.food.position)) {
       this.snake.eatFood();
       this.scorer.increaseBy(this.food.point);

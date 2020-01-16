@@ -39,6 +39,18 @@ class Snake {
     this.positions.push([headX + deltaX, headY + deltaY]);
   }
 
+  wrap(boundary) {
+    this.move();
+    this.positions.forEach((part, index) => {
+      let [partX, partY] = part;
+      if (partX < 0) partX = 99;
+      partX = partX % (boundary.colNum + 1);
+      if (partY < 0) partY = 59;
+      partY = partY % (boundary.rowNum + 1);
+      this.positions[index] = [partX, partY];
+    });
+  }
+
   eatFood() {
     this.positions.unshift(this.previousTail);
   }
