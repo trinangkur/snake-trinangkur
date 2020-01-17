@@ -41,11 +41,11 @@ class Snake {
 
   wrap(boundary) {
     this.move();
+    const maxColNum = boundary.colNum + 1;
+    const maxRowNum = boundary.rowNum + 1;
     let [headX, headY] = this.head;
-    if (headX < 0) headX = 99;
-    headX = headX % (boundary.colNum + 1);
-    if (headY < 0) headY = 59;
-    headY = headY % (boundary.rowNum + 1);
+    headX = (maxColNum + headX) % maxColNum;
+    headY = (headY + maxRowNum) % maxRowNum;
     this.positions[this.positions.length - 1] = [headX, headY];
   }
 
