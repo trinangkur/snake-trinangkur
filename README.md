@@ -1,0 +1,3 @@
+# snake-trinangkur
+
+use left arrow key to turn the snake left and right arrow to turn the snake right from its relative position...
